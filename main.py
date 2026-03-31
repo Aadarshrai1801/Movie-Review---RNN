@@ -4,6 +4,7 @@ import tensorflow as tf
 from tensorflow.keras.datasets import imdb #type: ignore
 from tensorflow.keras.preprocessing import sequence #type: ignore
 from tensorflow.keras.models import load_model #type: ignore
+import streamlit as st
 
 # Load the IMDB dataset word index
 word_index = imdb.get_word_index()
@@ -13,6 +14,7 @@ reverse_word_index = {value: key for key, value in word_index.items()}
 model = load_model('simple_rnn_imdb.h5')
 
 # Step 2: Helper Functions
+
 # Function to decode reviews
 def decode_review(encoded_review):
     return ' '.join([reverse_word_index.get(i - 3, '?') for i in encoded_review])
@@ -23,9 +25,6 @@ def preprocess_text(text):
     encoded_review = [word_index.get(word, 2) + 3 for word in words]
     padded_review = sequence.pad_sequences([encoded_review], maxlen=500)
     return padded_review
-
-
-import streamlit as st
 
 # Streamlit app
 st.title('IMDB Movie Review Sentiment Analysis')
